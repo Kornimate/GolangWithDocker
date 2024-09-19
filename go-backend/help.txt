@@ -1,0 +1,10 @@
+docker start <container>
+docker stop <container>
+docker exec -it <container> bash
+docker exec -it <container> mysql -h localhost -P 3306 -u root
+mysql -h localhost -P 3306 -u root
+show datbases;
+show tables;
+create database <db_name>
+sql commands...
+use <db_name>
