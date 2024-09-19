@@ -8,11 +8,6 @@ import (
 	"github.com/go-sql-driver/mysql"
 )
 
-type UserData struct {
-	id   int64
-	name string
-}
-
 var db *sql.DB
 
 func DatabaseConnection() {
@@ -54,7 +49,7 @@ func GetUsers() ([]UserData, error) {
 	for rows.Next() {
 		var usr UserData
 
-		if err := rows.Scan(&usr.id, &usr.name); err != nil {
+		if err := rows.Scan(&usr.Id, &usr.Name); err != nil {
 			return nil, fmt.Errorf("error while parsing user data %v", err)
 		}
 
@@ -74,7 +69,7 @@ func GetUserById(id int) (UserData, error) {
 
 	row := db.QueryRow("SELECT * FROM users WHERE id = ?", id)
 
-	if err := row.Scan(&usr.id, &usr.name); err != nil {
+	if err := row.Scan(&usr.Id, &usr.Name); err != nil {
 		if err == sql.ErrNoRows {
 			return usr, fmt.Errorf("no user with this id %v", id)
 		}
@@ -87,7 +82,7 @@ func GetUserById(id int) (UserData, error) {
 
 func AddUser(user UserData) error {
 
-	result, err := db.Exec("INSERT INTO users (name) values (?)", user.name)
+	result, err := db.Exec("INSERT INTO users (name) values (?)", user.Name)
 
 	if err != nil {
 		return fmt.Errorf("error while inserting user %v", err)

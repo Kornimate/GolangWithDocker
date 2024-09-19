@@ -1,39 +1,69 @@
 package main
 
-import "fmt"
+import (
+	"github.com/gin-gonic/gin"
+
+	"net/http"
+)
 
 func main() {
 	DatabaseConnection()
 
-	users, err := GetUsers()
+	router := gin.Default()
 
-	if err != nil {
-		fmt.Println(err)
-	} else {
-		fmt.Println(users)
+	router.GET("/users", GetUsersAPI)
+	router.POST("/adduser", PostUserAPI)
+
+	router.Run("localhost:8080")
+
+	// users, err := GetUsers()
+
+	// if err != nil {
+	// 	fmt.Println(err)
+	// } else {
+	// 	fmt.Println(users)
+	// }
+
+	// user, err := GetUserById(3)
+
+	// if err != nil {
+	// 	fmt.Println(err)
+	// } else {
+	// 	fmt.Println(user)
+	// }
+
+	// err = AddUser(UserData{
+	// 	name: fmt.Sprintf("Kornidesz %d", rand.Int31n(10000)),
+	// })
+
+	// if err != nil {
+	// 	fmt.Println(err)
+	// }
+
+	// users, err = GetUsers()
+
+	// if err != nil {
+	// 	fmt.Println(err)
+	// } else {
+	// 	fmt.Println(users)
+	// }
+}
+
+func GetUsersAPI(context *gin.Context) {
+
+	users, _ := GetUsers()
+
+	context.IndentedJSON(http.StatusOK, users)
+}
+
+func PostUserAPI(context *gin.Context) {
+	var usr UserData
+
+	if err := context.BindJSON(&usr); err != nil {
+		return
 	}
 
-	user, err := GetUserById(3)
+	AddUser(usr)
 
-	if err != nil {
-		fmt.Println(err)
-	} else {
-		fmt.Println(user)
-	}
-
-	err = AddUser(UserData{
-		name: "Mathias Kornidesz",
-	})
-
-	if err != nil {
-		fmt.Println(err)
-	}
-
-	users, err = GetUsers()
-
-	if err != nil {
-		fmt.Println(err)
-	} else {
-		fmt.Println(users)
-	}
+	context.IndentedJSON(http.StatusCreated, usr)
 }
