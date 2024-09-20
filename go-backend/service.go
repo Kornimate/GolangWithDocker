@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
+	"os"
 
 	"github.com/go-sql-driver/mysql"
 )
@@ -13,10 +14,10 @@ var db *sql.DB
 func DatabaseConnection() {
 
 	config := mysql.Config{
-		User:   "root",
+		User:   os.Getenv("DB_USER"),
 		Passwd: "",
 		Net:    "tcp",
-		Addr:   "localhost:3306",
+		Addr:   fmt.Sprintf("%v:%v", os.Getenv("DB_HOST"), os.Getenv("DB_PORT")),
 		DBName: "user_db",
 	}
 
@@ -33,7 +34,7 @@ func DatabaseConnection() {
 		log.Fatal(pingErr)
 	}
 
-	fmt.Println("Connected!")
+	fmt.Println("Datbase connection established!")
 }
 
 func GetUsers() ([]UserData, error) {

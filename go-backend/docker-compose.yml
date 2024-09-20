@@ -1,0 +1,28 @@
+version: '1.0'
+
+services:
+  mysql:
+    image: mysql:latest
+    container_name: mysql-db
+    restart: always
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: true
+      MYSQL_DATABASE: user_db
+      MYSQL_USER: root
+    ports:
+      - "3306:3306"
+
+  go-app:
+    build: .
+    container_name: go-server
+    depends_on:
+      - mysql
+    ports:
+      - "8080:8080"
+    environment:
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_USER: root
+      DB_NAME: user_db
+    links:
+      - mysql

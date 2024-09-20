@@ -12,6 +12,7 @@ func main() {
 	router := gin.Default()
 
 	router.GET("/users", GetUsersAPI)
+	router.GET("/user/:id")
 	router.POST("/adduser", PostUserAPI)
 
 	router.Run("localhost:8080")
