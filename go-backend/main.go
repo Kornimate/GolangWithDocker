@@ -2,6 +2,7 @@ package main
 
 import (
 	"net/http"
+	"os"
 
 	docs "backend/go/docs"
 
@@ -11,8 +12,9 @@ import (
 )
 
 func main() {
-	DatabaseConnection()
-
+	if os.Getenv("DOCKER") != "" {
+		DatabaseConnection()
+	}
 	router := gin.Default()
 
 	router.GET("/", func(c *gin.Context) {
@@ -35,7 +37,7 @@ func main() {
 		ginSwagger.WrapHandler(swaggerFiles.Handler)(c)
 	})
 
-	router.Run(":8080")
+	router.Run( /* os.Getenv("HOST_DATA") */ "localhost:8080")
 }
 
 // @Summary ping example
