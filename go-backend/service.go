@@ -4,25 +4,26 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
-	"os"
 
-	"github.com/go-sql-driver/mysql"
+	_ "github.com/mattn/go-sqlite3"
 )
 
 var db *sql.DB
 
+const DATABASE string = "database.db"
+
 func DatabaseConnection() {
 
-	config := mysql.Config{
-		User:   os.Getenv("DB_USER"),
-		Passwd: "",
-		Net:    "tcp",
-		Addr:   fmt.Sprintf("%v:%v", os.Getenv("DB_HOST"), os.Getenv("DB_PORT")),
-		DBName: "user_db",
-	}
+	// config := mysql.Config{
+	// 	User:   os.Getenv("DB_USER"),
+	// 	Passwd: "",
+	// 	Net:    "tcp",
+	// 	Addr:   fmt.Sprintf("%v:%v", os.Getenv("DB_HOST"), os.Getenv("DB_PORT")),
+	// 	DBName: "user_db",
+	// }
 
 	var err error
-	db, err = sql.Open("mysql", config.FormatDSN())
+	db, err = sql.Open("sqlite3", DATABASE)
 
 	if err != nil {
 		log.Fatal(err)

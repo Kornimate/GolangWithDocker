@@ -2,7 +2,6 @@ package main
 
 import (
 	"net/http"
-	"os"
 
 	docs "backend/go/docs"
 
@@ -12,9 +11,8 @@ import (
 )
 
 func main() {
-	if os.Getenv("DOCKER") != "" {
-		DatabaseConnection()
-	}
+
+	DatabaseConnection()
 	router := gin.Default()
 
 	router.GET("/", func(c *gin.Context) {
